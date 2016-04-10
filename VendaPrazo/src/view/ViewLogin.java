@@ -12,15 +12,26 @@ import javax.swing.JOptionPane;
  *
  * @author maverick
  */
-public class view_login extends javax.swing.JFrame {
+public class ViewLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form view_login
      */
-    public view_login() {
+    public ViewLogin() {
         initComponents();
         setLocationRelativeTo(this);
         setTitle("Registro Venda a Prazo");
+    }
+
+    public boolean validarLoginSenha(String str, String str2) {
+
+        if (str.equals("paulo") && str2.equals("123")) {
+            JOptionPane.showMessageDialog(null, "Login Sucesso!", str2, JOptionPane.INFORMATION_MESSAGE);
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Login ou Senha incorreta!", "Error", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
     }
 
     /**
@@ -128,35 +139,27 @@ public class view_login extends javax.swing.JFrame {
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
 
-        String str, str2;
-        str = login.getText();
-        str2 = senha.getText();
+        boolean validate = false;
+        validate = validarLoginSenha(login.getText(), senha.getText());
 
-        if (str.equals("paulo") && str2.equals("123")) {
-            JOptionPane.showMessageDialog(null, "Login Sucesso!", str2, JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Login ou Senha incorreta!", "Error", JOptionPane.WARNING_MESSAGE);
+        if (validate) {
+            new ViewPrincipal().setVisible(true);
+            this.setVisible(false);
         }
 
-        new view_principal().setVisible(true);
-        this.setVisible(false);
 
     }//GEN-LAST:event_entrarActionPerformed
 
     private void senhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_senhaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String str, str2;
-            str = login.getText();
-            str2 = senha.getText();
 
-            if (str.equals("paulo") && str2.equals("123")) {
-                JOptionPane.showMessageDialog(null, "Login Sucesso!", str2, JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Login ou Senha incorreta!", "Error", JOptionPane.WARNING_MESSAGE);
+            boolean validate = false;
+            validate = validarLoginSenha(login.getText(), senha.getText());
+
+            if (validate) {
+                new ViewPrincipal().setVisible(true);
+                this.setVisible(false);
             }
-
-            new view_principal().setVisible(true);
-            this.setVisible(false);
         }
     }//GEN-LAST:event_senhaKeyPressed
 
@@ -177,20 +180,21 @@ public class view_login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(view_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(view_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(view_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(view_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new view_login().setVisible(true);
+                new ViewLogin().setVisible(true);
             }
         });
     }
