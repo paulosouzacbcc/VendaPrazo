@@ -7,6 +7,7 @@ package view;
 
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
+import util.Internal;
 import view.cliente.ViewConsultaCliente;
 
 /**
@@ -24,6 +25,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
         initComponents();
         iniciarTelas();
         setLocationRelativeTo(this);
+        Internal.retiraBotao(viewConsultaCliente);
         
         this.setTitle("Venda a Prazo");
     }
