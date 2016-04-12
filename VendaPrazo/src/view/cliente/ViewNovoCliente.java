@@ -18,6 +18,7 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(this);
+        this.setTitle("Criar Novo Cliente");
     }
 
     /**
