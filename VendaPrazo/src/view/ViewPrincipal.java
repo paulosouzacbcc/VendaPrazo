@@ -9,6 +9,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
 import util.Internal;
 import view.cliente.ViewConsultaCliente;
+import view.venda.ViewConsultaVenda;
 
 /**
  *
@@ -17,6 +18,7 @@ import view.cliente.ViewConsultaCliente;
 public class ViewPrincipal extends javax.swing.JFrame {
 
     ViewConsultaCliente viewConsultaCliente = new ViewConsultaCliente();
+    ViewConsultaVenda  viewConsultaVenda = new ViewConsultaVenda();
     
     /**
      * Creates new form view_principal
@@ -33,10 +35,12 @@ public class ViewPrincipal extends javax.swing.JFrame {
     public void iniciarTelas() {
 
         desktop.add(viewConsultaCliente);
+        desktop.add(viewConsultaVenda);
         
         
         try {
             viewConsultaCliente.setMaximum(true);
+            viewConsultaVenda.setMaximum(true);
             
             
         } catch (PropertyVetoException e) {
@@ -47,6 +51,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
     public void trocarTelas(JInternalFrame jInternalFrame) {
 
         viewConsultaCliente.setVisible(false);
+        viewConsultaVenda.setVisible(false);
         
 
         if (jInternalFrame != null)
@@ -90,6 +95,11 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/vendas.png"))); // NOI18N
         jButton2.setText("Vendas ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pdf-icon.png"))); // NOI18N
         jButton3.setText("Exportar");
@@ -124,6 +134,10 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         trocarTelas(viewConsultaCliente);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        trocarTelas(viewConsultaVenda);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
