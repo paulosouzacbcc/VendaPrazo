@@ -129,7 +129,10 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        new ViewNovaVenda(null, true).setVisible(true);
+        ViewNovaVenda viewNovaVenda = new ViewNovaVenda(null, true);
+        viewNovaVenda.showNovaVenda();
+        viewNovaVenda.alimentComboBoxCadastrar();
+        viewNovaVenda.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

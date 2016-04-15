@@ -17,7 +17,7 @@ import model.Cliente;
 public class ViewNovoCliente extends javax.swing.JDialog {
 
     boolean novoCliente = false;
-    
+
     /**
      * Creates new form ViewNovoCliente
      */
@@ -27,23 +27,26 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         this.setLocationRelativeTo(this);
     }
 
-    public boolean validarCampos(){
-        
-        if (nome.getText().isEmpty())
+    public boolean validarCampos() {
+
+        if (nome.getText().isEmpty()) {
             return false;
-        if (rua.getText().isEmpty())
+        }
+        if (rua.getText().isEmpty()) {
             return false;
-        if (bairro.getText().isEmpty())
+        }
+        if (bairro.getText().isEmpty()) {
             return false;
+        }
         return true;
-        
+
     }
-    
-    public void showNovoClienteTitle(){
+
+    public void showNovoClienteTitle() {
         this.setTitle("Cadastrar Novo Cliente");
         novoCliente = true;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -193,30 +196,31 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
-        
+
         boolean save = false;
-        
+
         if (validarCampos()) {
-             
-             Cliente cliente = new Cliente();
-             cliente.setNome(nome.getText());
-             cliente.setBairro(bairro.getText());
-             cliente.setCasa(Integer.parseInt(numero.getText()));
-             cliente.setData(new Date());
-             cliente.setObservacao(Observacao.getText());
-             cliente.setRua(rua.getText());
-             cliente.setTelefone(Integer.parseInt(telefone.getText()));
-             
-             ControllerCliente controllerCliente = new ControllerCliente();
-             
-             if (novoCliente)
+
+            Cliente cliente = new Cliente();
+            cliente.setNome(nome.getText());
+            cliente.setBairro(bairro.getText());
+            cliente.setCasa(Integer.parseInt(numero.getText()));
+            cliente.setData(new Date());
+            cliente.setObservacao(Observacao.getText());
+            cliente.setRua(rua.getText());
+            cliente.setTelefone(Integer.parseInt(telefone.getText()));
+
+            ControllerCliente controllerCliente = new ControllerCliente();
+
+            if (novoCliente) {
                 controllerCliente.saveCliente(cliente);
-             else //TODO editar
-             
-             this.dispose();
-             
+                this.dispose();
+            } else {
+                //TODO criar editar
+            }
+
         } else {
-             JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
+            JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
         }
     }//GEN-LAST:event_salvarActionPerformed
 
@@ -227,7 +231,7 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

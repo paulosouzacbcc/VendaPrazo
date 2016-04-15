@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.dao.ClienteDao;
-import util.Conexao;
 
 /**
  *
@@ -22,16 +21,18 @@ public class ControllerCliente {
 
         ClienteDao clienteDao = new ClienteDao();
 
-        save = clienteDao.salvar(cliente);
-
-        if (save) 
+        //TODO colocar exception espesificas revisar isso aqui
+        try {
+            save = clienteDao.salvar(cliente);
             JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
-        else JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+        } catch (NumberFormatException numberFormatException) {
+            JOptionPane.showMessageDialog(null, "Erro ao Salvar, não aceita letras com numeros");
+        }
 
     }
-    
-    public List<Cliente> getListClientesASC(){
-        
+
+    public List<Cliente> getListClientesASC() {
+
         try {
             ClienteDao clienteDao = new ClienteDao();
             return clienteDao.selectAllClienteASCName();
@@ -40,8 +41,8 @@ public class ControllerCliente {
         }
         return null;
     }
-    
-    public List<Cliente> getListClienteByNome(String nome){
+
+    public List<Cliente> getListClienteByNome(String nome) {
         try {
             ClienteDao clienteDao = new ClienteDao();
             return clienteDao.selectClienteByName(nome);
@@ -50,4 +51,17 @@ public class ControllerCliente {
         }
         return null;
     }
+
+    public Cliente getClienteByName(String nome) {
+
+        try {
+            ClienteDao clienteDao = new ClienteDao();
+            return clienteDao.selectClienteByNome(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

@@ -5,13 +5,23 @@
  */
 package view.venda;
 
+import controller.ControllerCliente;
+import controller.ControllerVenda;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import model.Cliente;
+import model.Venda;
 
 /**
  *
  * @author Paulo Soza
  */
 public class ViewNovaVenda extends javax.swing.JDialog {
+
+    private boolean novaVenda = false;
+    private DefaultComboBoxModel comboBoxModel;
 
     /**
      * Creates new form ViewNovaVenda
@@ -23,17 +33,39 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         setLocationRelativeTo(this);
     }
 
-    //TODO terminar função validação
-    public boolean validarCampos(){
-        
+    public void alimentComboBoxCadastrar() {
+
+        comboBoxModel = new DefaultComboBoxModel();
+        ControllerCliente controllerCliente = new ControllerCliente();
+        List<Cliente> clientes = controllerCliente.getListClientesASC();
+
+        comboBoxModel.addElement("--Selecione um Cliente--");
+        for (int i = 0; i < clientes.size(); i++) {
+            comboBoxModel.addElement(clientes.get(i).getNome());
+        }
+        jComboBoxNomeCliente.setModel(comboBoxModel);
+
+    }
+
+    public void showNovaVenda() {
+        setTitle("Cadastrar Nova Venda a Prazo");
+        novaVenda = true;
+    }
+
+    public boolean validarCampos() {
+
+        if (jComboBoxNomeCliente.getSelectedItem() == "--Selecione um Cliente--") {
+            JOptionPane.showMessageDialog(null, "Você deve selecionar um cliente.");
+            return false;
+        }
         if (valor.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "O campo 'valor' não pode ser nulo");
             return false;
         }
-        
+
         return true;
     }
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,12 +77,12 @@ public class ViewNovaVenda extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        nomeCliente = new javax.swing.JComboBox<>();
+        jComboBoxNomeCliente = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         valor = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        observacao = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -60,15 +92,15 @@ public class ViewNovaVenda extends javax.swing.JDialog {
 
         jLabel1.setText("Nome Cliente:");
 
-        nomeCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNomeCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Valor:");
 
         jLabel3.setText("Observação:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        observacao.setColumns(20);
+        observacao.setRows(5);
+        jScrollPane1.setViewportView(observacao);
 
         jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +140,7 @@ public class ViewNovaVenda extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
                             .addComponent(valor)
-                            .addComponent(nomeCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jComboBoxNomeCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -117,7 +149,7 @@ public class ViewNovaVenda extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(nomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -155,7 +187,32 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
+        if (validarCampos()) {
+
+            boolean save = false;
+            Venda venda = new Venda();
+            venda.setData(new Date());
+            venda.setObservacao(observacao.getText());
+            venda.setValor(Double.parseDouble(valor.getText()));
+
+            ControllerCliente controllerCliente = new ControllerCliente();
+            venda.setCliente(controllerCliente.getClienteByName(jComboBoxNomeCliente.getSelectedItem().toString()));
+
+            ControllerVenda controllerVenda = new ControllerVenda();
+
+            if (novaVenda) {
+                save = controllerVenda.save(venda);
+                if (save) {
+                    JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro ao salvar nova venda à prazo");
+                }
+            } else {
+                //TODO criar Editar
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -165,7 +222,7 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -203,13 +260,13 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBoxNomeCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JComboBox<String> nomeCliente;
+    private javax.swing.JTextArea observacao;
     private javax.swing.JTextField valor;
     // End of variables declaration//GEN-END:variables
 }

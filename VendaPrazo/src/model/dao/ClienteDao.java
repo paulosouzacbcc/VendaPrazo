@@ -7,7 +7,6 @@ package model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import jpa.ClienteJpaController;
 import model.Cliente;
@@ -50,6 +49,20 @@ public class ClienteDao extends ClienteJpaController {
 
     }
 
+    public Cliente selectClienteByNome(String nome) {
+
+        try {
+            EntityManager entityManager = super.getEntityManager();
+            Query query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.nome = :nome");
+            query.setParameter("nome", nome);
+            return (Cliente) query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public boolean salvar(Cliente cliente) {
 
         try {
@@ -57,10 +70,8 @@ public class ClienteDao extends ClienteJpaController {
             clienteJpaController.create(cliente);
             return true;
         } catch (Exception e) {
-            System.out.println("Erro ao Salvar");
             e.printStackTrace();
         }
-
         return false;
     }
 

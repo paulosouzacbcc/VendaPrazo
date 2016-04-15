@@ -18,8 +18,8 @@ import view.venda.ViewConsultaVenda;
 public class ViewPrincipal extends javax.swing.JFrame {
 
     ViewConsultaCliente viewConsultaCliente = new ViewConsultaCliente();
-    ViewConsultaVenda  viewConsultaVenda = new ViewConsultaVenda();
-    
+    ViewConsultaVenda viewConsultaVenda = new ViewConsultaVenda();
+
     /**
      * Creates new form view_principal
      */
@@ -28,21 +28,19 @@ public class ViewPrincipal extends javax.swing.JFrame {
         iniciarTelas();
         setLocationRelativeTo(this);
         Internal.retiraBotao(viewConsultaCliente);
-        
+
         this.setTitle("Venda a Prazo");
     }
-    
+
     public void iniciarTelas() {
 
         desktop.add(viewConsultaCliente);
         desktop.add(viewConsultaVenda);
-        
-        
+
         try {
             viewConsultaCliente.setMaximum(true);
             viewConsultaVenda.setMaximum(true);
-            
-            
+
         } catch (PropertyVetoException e) {
             System.err.println(" Exception maximizar internal\n " + e);
         }
@@ -52,10 +50,10 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
         viewConsultaCliente.setVisible(false);
         viewConsultaVenda.setVisible(false);
-        
 
-        if (jInternalFrame != null)
+        if (jInternalFrame != null) {
             jInternalFrame.setVisible(true);
+        }
     }
 
     /**
@@ -147,7 +145,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
