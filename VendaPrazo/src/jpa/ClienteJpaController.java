@@ -21,7 +21,7 @@ import model.Cliente;
 
 /**
  *
- * @author maverick
+ * @author Paulo Soza
  */
 public class ClienteJpaController implements Serializable {
 

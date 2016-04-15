@@ -21,7 +21,7 @@ import model.VendaPK;
 
 /**
  *
- * @author maverick
+ * @author Paulo Soza
  */
 public class VendaJpaController implements Serializable {
 

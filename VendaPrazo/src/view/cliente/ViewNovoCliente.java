@@ -5,6 +5,11 @@
  */
 package view.cliente;
 
+import controller.ControllerCliente;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import model.Cliente;
+
 /**
  *
  * @author Paulo Soza
@@ -21,6 +26,18 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         this.setTitle("Criar Novo Cliente");
     }
 
+    public boolean validarCampos(){
+        
+        if (nome.getText().isEmpty())
+            return false;
+        if (rua.getText().isEmpty())
+            return false;
+        if (bairro.getText().isEmpty())
+            return false;
+        return true;
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,6 +92,11 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         });
 
         salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -163,6 +185,35 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
+
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        
+        boolean save = false;
+        if (validarCampos()) {
+             
+             Cliente cliente = new Cliente();
+             cliente.setNome(nome.getText());
+             cliente.setBairro(bairro.getText());
+             cliente.setCasa(Integer.parseInt(numero.getText()));
+             cliente.setData(new Date());
+             cliente.setObservacao(Observacao.getText());
+             cliente.setRua(rua.getText());
+             cliente.setTelefone(Integer.parseInt(telefone.getText()));
+             
+             ControllerCliente controllerCliente = new ControllerCliente();
+             
+             save = controllerCliente.saveCliente(cliente);
+             
+             if(save){
+                 JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
+             }else{
+                 JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+             }
+             
+        } else {
+             JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
+        }
+    }//GEN-LAST:event_salvarActionPerformed
 
     /**
      * @param args the command line arguments
