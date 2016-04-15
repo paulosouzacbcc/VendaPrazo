@@ -5,6 +5,11 @@
  */
 package view.cliente;
 
+import controller.ControllerCliente;
+import java.util.List;
+import model.Cliente;
+import util.MyDefaultTableModel;
+
 /**
  *
  * @author maverick
@@ -14,9 +19,38 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form view_consulta_cliente
      */
+    private MyDefaultTableModel tableModel;
+    ControllerCliente controllerCliente = new ControllerCliente();
+
     public ViewConsultaCliente() {
         initComponents();
-        
+        showTable();
+
+    }
+
+    public void createTableModel() {
+        tableModel = new MyDefaultTableModel(new String[]{"Nome", "Rua", "Bairro", "Telefone"}, 0, false);
+        jTableConsultaCliente.setModel(tableModel);
+    }
+
+    public void alimentTable(List<Cliente> clientes) {
+
+        for (int i = 0; i < clientes.size(); i++) {
+            String[] linhas = new String[]{clientes.get(i).getNome(), clientes.get(i).getRua(), clientes.get(i).getBairro(), String.valueOf(clientes.get(i).getTelefone())};
+            tableModel.addRow(linhas);
+        }
+        jTableConsultaCliente.setModel(tableModel);
+    }
+    
+    public void showTable(){
+        createTableModel();
+        alimentTable(controllerCliente.getListClientesASC());
+    }
+    
+    public void pesquisarTable(String nome){
+        createTableModel();
+        //System.out.println(controllerCliente.getListClienteByNome(nome).toString());
+        alimentTable(controllerCliente.getListClienteByNome(nome));
     }
 
     /**
@@ -30,10 +64,10 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nome = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableConsultaCliente = new javax.swing.JTable();
         removerCliente = new javax.swing.JButton();
         editarCliente = new javax.swing.JButton();
         novoCliente = new javax.swing.JButton();
@@ -41,9 +75,20 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel1.setText("Buscar Cliente:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Refresh3.png"))); // NOI18N
+        nome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nomeActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Refresh3.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTableConsultaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -54,7 +99,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableConsultaCliente);
 
         removerCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excluir.png"))); // NOI18N
         removerCliente.setText("Excluir");
@@ -78,7 +123,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap(92, Short.MAX_VALUE))
@@ -97,7 +142,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
@@ -124,8 +169,19 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void novoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoClienteActionPerformed
-        new ViewNovoCliente(null, true).setVisible(true);
+        ViewNovoCliente viewNovoCliente = new ViewNovoCliente(null, true);
+        viewNovoCliente.showNovoClienteTitle();
+        viewNovoCliente.setVisible(true);
+        showTable();
     }//GEN-LAST:event_novoClienteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        showTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeActionPerformed
+        pesquisarTable(nome.getText());
+    }//GEN-LAST:event_nomeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -134,8 +190,8 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable jTableConsultaCliente;
+    private javax.swing.JTextField nome;
     private javax.swing.JButton novoCliente;
     private javax.swing.JButton removerCliente;
     // End of variables declaration//GEN-END:variables

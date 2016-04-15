@@ -5,6 +5,8 @@
  */
 package view.venda;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Paulo Soza
@@ -21,6 +23,17 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         setLocationRelativeTo(this);
     }
 
+    //TODO terminar função validação
+    public boolean validarCampos(){
+        
+        if (valor.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "O campo 'valor' não pode ser nulo");
+            return false;
+        }
+        
+        return true;
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +78,11 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         });
 
         jButton2.setText("Salvar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,6 +153,10 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

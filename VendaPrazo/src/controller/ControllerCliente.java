@@ -5,6 +5,7 @@
  */
 package controller;
 
+import java.util.List;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.dao.ClienteDao;
@@ -28,5 +29,25 @@ public class ControllerCliente {
         else JOptionPane.showMessageDialog(null, "Erro ao Salvar");
 
     }
-
+    
+    public List<Cliente> getListClientesASC(){
+        
+        try {
+            ClienteDao clienteDao = new ClienteDao();
+            return clienteDao.selectAllClienteASCName();
+        } catch (Exception e) {
+            System.out.println("Error buscar list cliente");
+        }
+        return null;
+    }
+    
+    public List<Cliente> getListClienteByNome(String nome){
+        try {
+            ClienteDao clienteDao = new ClienteDao();
+            return clienteDao.selectClienteByName(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

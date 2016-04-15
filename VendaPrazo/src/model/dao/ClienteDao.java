@@ -37,6 +37,19 @@ public class ClienteDao extends ClienteJpaController {
 
     }
 
+    public List<Cliente> selectClienteByName(String nome) {
+        try {
+            EntityManager entityManager = super.getEntityManager();
+            Query query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.nome LIKE :nome ORDER BY c.nome ASC ");
+            query.setParameter("nome", nome + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public boolean salvar(Cliente cliente) {
 
         try {

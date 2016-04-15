@@ -16,6 +16,8 @@ import model.Cliente;
  */
 public class ViewNovoCliente extends javax.swing.JDialog {
 
+    boolean novoCliente = false;
+    
     /**
      * Creates new form ViewNovoCliente
      */
@@ -23,7 +25,6 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(this);
-        this.setTitle("Criar Novo Cliente");
     }
 
     public boolean validarCampos(){
@@ -36,6 +37,11 @@ public class ViewNovoCliente extends javax.swing.JDialog {
             return false;
         return true;
         
+    }
+    
+    public void showNovoClienteTitle(){
+        this.setTitle("Cadastrar Novo Cliente");
+        novoCliente = true;
     }
     
     /**
@@ -203,9 +209,12 @@ public class ViewNovoCliente extends javax.swing.JDialog {
              
              ControllerCliente controllerCliente = new ControllerCliente();
              
-             controllerCliente.saveCliente(cliente);
+             if (novoCliente)
+                controllerCliente.saveCliente(cliente);
+             else //TODO editar
              
              this.dispose();
+             
         } else {
              JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
         }
