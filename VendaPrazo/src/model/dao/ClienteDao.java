@@ -17,15 +17,14 @@ import util.Conexao;
  *
  * @author Paulo Soza
  */
-public class ClienteDao extends ClienteJpaController{
-    
+public class ClienteDao extends ClienteJpaController {
+
     public ClienteDao() {
         super(Conexao.conectar());
     }
-    
-    public List<Cliente> selectAllClienteASCName(){
-        
-        
+
+    public List<Cliente> selectAllClienteASCName() {
+
         try {
             EntityManager entityManager = super.getEntityManager();
             Query query = entityManager.createQuery("SELECT c FROM Cliente c ORDER BY c.nome ASC ");
@@ -33,20 +32,23 @@ public class ClienteDao extends ClienteJpaController{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return null;
-        
+
     }
-    
-    public void salvar(Cliente cliente){
-        
+
+    public boolean salvar(Cliente cliente) {
+
         try {
             ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
             clienteJpaController.create(cliente);
+            return true;
         } catch (Exception e) {
+            System.out.println("Erro ao Salvar");
             e.printStackTrace();
         }
-        
+
+        return false;
     }
-    
+
 }

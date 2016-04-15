@@ -189,6 +189,7 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
         
         boolean save = false;
+        
         if (validarCampos()) {
              
              Cliente cliente = new Cliente();
@@ -202,14 +203,9 @@ public class ViewNovoCliente extends javax.swing.JDialog {
              
              ControllerCliente controllerCliente = new ControllerCliente();
              
-             save = controllerCliente.saveCliente(cliente);
+             controllerCliente.saveCliente(cliente);
              
-             if(save){
-                 JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
-             }else{
-                 JOptionPane.showMessageDialog(null, "Erro ao Salvar");
-             }
-             
+             this.dispose();
         } else {
              JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
         }

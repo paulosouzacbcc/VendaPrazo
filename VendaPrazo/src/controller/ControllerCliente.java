@@ -5,6 +5,7 @@
  */
 package controller;
 
+import javax.swing.JOptionPane;
 import model.Cliente;
 import model.dao.ClienteDao;
 import util.Conexao;
@@ -14,19 +15,18 @@ import util.Conexao;
  * @author Paulo Soza
  */
 public class ControllerCliente {
-    
-    public boolean saveCliente(Cliente cliente){
-        
-        
+
+    public void saveCliente(Cliente cliente) {
+        boolean save = false;
+
         ClienteDao clienteDao = new ClienteDao();
-        try {
-            clienteDao.salvar(cliente);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return false;
+
+        save = clienteDao.salvar(cliente);
+
+        if (save) 
+            JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
+        else JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+
     }
-    
+
 }
