@@ -41,13 +41,13 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
         }
         jTableConsultaCliente.setModel(tableModel);
     }
-    
-    public void showTable(){
+
+    public void showTable() {
         createTableModel();
         alimentTable(controllerCliente.getListClientesASC());
     }
-    
-    public void pesquisarTable(String nome){
+
+    public void pesquisarTable(String nome) {
         createTableModel();
         //System.out.println(controllerCliente.getListClienteByNome(nome).toString());
         alimentTable(controllerCliente.getListClienteByNome(nome));
@@ -64,7 +64,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        nome = new javax.swing.JTextField();
+        buscarNome = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableConsultaCliente = new javax.swing.JTable();
@@ -75,9 +75,9 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel1.setText("Buscar Cliente:");
 
-        nome.addActionListener(new java.awt.event.ActionListener() {
+        buscarNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nomeActionPerformed(evt);
+                buscarNomeActionPerformed(evt);
             }
         });
 
@@ -106,6 +106,11 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
         editarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png"))); // NOI18N
         editarCliente.setText("Editar Cliente");
+        editarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarClienteActionPerformed(evt);
+            }
+        });
 
         novoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/novoCliente.png"))); // NOI18N
         novoCliente.setText("Novo Cliente");
@@ -123,7 +128,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscarNome, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap(92, Short.MAX_VALUE))
@@ -142,7 +147,7 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscarNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
@@ -177,21 +182,28 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         showTable();
+        buscarNome.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeActionPerformed
-        pesquisarTable(nome.getText());
-    }//GEN-LAST:event_nomeActionPerformed
+    private void buscarNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarNomeActionPerformed
+        pesquisarTable(buscarNome.getText());
+    }//GEN-LAST:event_buscarNomeActionPerformed
 
+    private void editarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarClienteActionPerformed
+
+        if (jTableConsultaCliente.getSelectedRow() == -1) {
+
+        }
+    }//GEN-LAST:event_editarClienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField buscarNome;
     private javax.swing.JButton editarCliente;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableConsultaCliente;
-    private javax.swing.JTextField nome;
     private javax.swing.JButton novoCliente;
     private javax.swing.JButton removerCliente;
     // End of variables declaration//GEN-END:variables

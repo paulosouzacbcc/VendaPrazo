@@ -42,6 +42,10 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
     }
 
+    public void novoCliente(Cliente cliente) {
+        novoCliente = true;
+    }
+
     public void showNovoClienteTitle() {
         this.setTitle("Cadastrar Novo Cliente");
         novoCliente = true;
@@ -284,4 +288,5 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     private javax.swing.JButton salvar;
     private javax.swing.JTextField telefone;
     // End of variables declaration//GEN-END:variables
+
 }
