@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.dao.ClienteDao;
+import util.Alert;
 
 /**
  *
@@ -16,10 +17,11 @@ import model.dao.ClienteDao;
  */
 public class ControllerCliente {
 
-    public void saveCliente(Cliente cliente) {
-        boolean save = false;
+    boolean save = false;
 
-        ClienteDao clienteDao = new ClienteDao();
+    ClienteDao clienteDao = new ClienteDao();
+
+    public void save(Cliente cliente) {
 
         //TODO colocar exception espesificas revisar isso aqui
         try {
@@ -29,6 +31,18 @@ public class ControllerCliente {
             JOptionPane.showMessageDialog(null, "Erro ao Salvar, não aceita letras com numeros");
         }
 
+    }
+
+    public void editar(Cliente cliente) {
+
+        try {
+
+            save = clienteDao.editar(cliente);
+            Alert.sucess("Salvo com Sucesso!", "Editar cliente");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Cliente> getListClientesASC() {

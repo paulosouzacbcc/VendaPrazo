@@ -75,4 +75,17 @@ public class ClienteDao extends ClienteJpaController {
         return false;
     }
 
+    //TODO verificar s
+    public boolean editar(Cliente cliente) {
+        try {
+            ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
+            clienteJpaController.edit(cliente);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

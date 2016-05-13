@@ -16,7 +16,8 @@ import model.Cliente;
  */
 public class ViewNovoCliente extends javax.swing.JDialog {
 
-    boolean novoCliente = false;
+    boolean isNovoCliente = false;
+    Cliente cliente = new Cliente();
 
     /**
      * Creates new form ViewNovoCliente
@@ -43,12 +44,12 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     }
 
     public void novoCliente(Cliente cliente) {
-        novoCliente = true;
+        isNovoCliente = true;
     }
 
     public void showNovoClienteTitle() {
         this.setTitle("Cadastrar Novo Cliente");
-        novoCliente = true;
+        isNovoCliente = true;
     }
 
     /**
@@ -73,7 +74,7 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         telefone = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Observacao = new javax.swing.JTextArea();
+        observacao = new javax.swing.JTextArea();
         cancelar = new javax.swing.JButton();
         salvar = new javax.swing.JButton();
 
@@ -93,9 +94,9 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
         jLabel6.setText("Observações:");
 
-        Observacao.setColumns(20);
-        Observacao.setRows(5);
-        jScrollPane1.setViewportView(Observacao);
+        observacao.setColumns(20);
+        observacao.setRows(5);
+        jScrollPane1.setViewportView(observacao);
 
         cancelar.setText("Cancelar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -201,26 +202,36 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
 
-        boolean save = false;
+        Cliente cliente = new Cliente();
 
         if (validarCampos()) {
 
-            Cliente cliente = new Cliente();
             cliente.setNome(nome.getText());
             cliente.setBairro(bairro.getText());
             cliente.setCasa(Integer.parseInt(numero.getText()));
             cliente.setData(new Date());
-            cliente.setObservacao(Observacao.getText());
+            cliente.setObservacao(observacao.getText());
             cliente.setRua(rua.getText());
             cliente.setTelefone(Integer.parseInt(telefone.getText()));
 
             ControllerCliente controllerCliente = new ControllerCliente();
 
-            if (novoCliente) {
-                controllerCliente.saveCliente(cliente);
+            if (isNovoCliente) {
+                controllerCliente.save(cliente);
                 this.dispose();
             } else {
-                //TODO criar editar
+
+                cliente.setNome(nome.getText());
+                cliente.setBairro(bairro.getText());
+                cliente.setCasa(Integer.parseInt(numero.getText()));
+                cliente.setData(new Date());
+                cliente.setObservacao(observacao.getText());
+                cliente.setRua(rua.getText());
+                cliente.setTelefone(Integer.parseInt(telefone.getText()));
+                cliente.setIdCliente(this.cliente.getIdCliente());
+
+                controllerCliente.editar(cliente);
+                this.dispose();
             }
 
         } else {
@@ -271,7 +282,6 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Observacao;
     private javax.swing.JTextField bairro;
     private javax.swing.JButton cancelar;
     private javax.swing.JLabel jLabel1;
@@ -284,9 +294,25 @@ public class ViewNovoCliente extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nome;
     private javax.swing.JTextField numero;
+    private javax.swing.JTextArea observacao;
     private javax.swing.JTextField rua;
     private javax.swing.JButton salvar;
     private javax.swing.JTextField telefone;
     // End of variables declaration//GEN-END:variables
+
+    public void editarCliente(Cliente clienteUsuario) {
+        setTitle("Editar Cliente");
+
+        cliente = clienteUsuario;
+
+        nome.setText(clienteUsuario.getNome());
+        rua.setText(clienteUsuario.getRua());
+        numero.setText(String.valueOf(clienteUsuario.getCasa()));
+        telefone.setText(String.valueOf(clienteUsuario.getTelefone()));
+        observacao.setText(clienteUsuario.getObservacao());
+        bairro.setText(clienteUsuario.getBairro());
+
+        isNovoCliente = false;
+    }
 
 }

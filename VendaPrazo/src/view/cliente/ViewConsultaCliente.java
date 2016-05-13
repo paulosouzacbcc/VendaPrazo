@@ -8,7 +8,9 @@ package view.cliente;
 import controller.ControllerCliente;
 import java.util.List;
 import model.Cliente;
+import util.Alert;
 import util.MyDefaultTableModel;
+import util.Texto;
 
 /**
  *
@@ -21,37 +23,6 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
      */
     private MyDefaultTableModel tableModel;
     ControllerCliente controllerCliente = new ControllerCliente();
-
-    public ViewConsultaCliente() {
-        initComponents();
-        showTable();
-
-    }
-
-    public void createTableModel() {
-        tableModel = new MyDefaultTableModel(new String[]{"Nome", "Rua", "Bairro", "Telefone"}, 0, false);
-        jTableConsultaCliente.setModel(tableModel);
-    }
-
-    public void alimentTable(List<Cliente> clientes) {
-
-        for (int i = 0; i < clientes.size(); i++) {
-            String[] linhas = new String[]{clientes.get(i).getNome(), clientes.get(i).getRua(), clientes.get(i).getBairro(), String.valueOf(clientes.get(i).getTelefone())};
-            tableModel.addRow(linhas);
-        }
-        jTableConsultaCliente.setModel(tableModel);
-    }
-
-    public void showTable() {
-        createTableModel();
-        alimentTable(controllerCliente.getListClientesASC());
-    }
-
-    public void pesquisarTable(String nome) {
-        createTableModel();
-        //System.out.println(controllerCliente.getListClienteByNome(nome).toString());
-        alimentTable(controllerCliente.getListClienteByNome(nome));
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,6 +70,11 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTableConsultaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableConsultaClienteMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableConsultaCliente);
 
         removerCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excluir.png"))); // NOI18N
@@ -192,9 +168,20 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     private void editarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarClienteActionPerformed
 
         if (jTableConsultaCliente.getSelectedRow() == -1) {
-
+            Alert.warning("Você deve selecionar um nome.", "Selecione uma linha");
+            return;
         }
+
+        editarCliente();
+
     }//GEN-LAST:event_editarClienteActionPerformed
+
+    private void jTableConsultaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableConsultaClienteMouseClicked
+
+        if (evt.getClickCount() >= 2) {
+            Alert.information("teste", "hgh");
+        }
+    }//GEN-LAST:event_jTableConsultaClienteMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField buscarNome;
@@ -207,4 +194,44 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JButton novoCliente;
     private javax.swing.JButton removerCliente;
     // End of variables declaration//GEN-END:variables
+
+    public ViewConsultaCliente() {
+        initComponents();
+        showTable();
+
+    }
+
+    public void createTableModel() {
+        tableModel = new MyDefaultTableModel(new String[]{"Nome", "Rua", "Bairro", "Telefone"}, 0, false);
+        jTableConsultaCliente.setModel(tableModel);
+    }
+
+    public void alimentTable(List<Cliente> clientes) {
+
+        for (int i = 0; i < clientes.size(); i++) {
+            String[] linhas = new String[]{clientes.get(i).getNome(), clientes.get(i).getRua(), clientes.get(i).getBairro(), String.valueOf(clientes.get(i).getTelefone())};
+            tableModel.addRow(linhas);
+        }
+        jTableConsultaCliente.setModel(tableModel);
+    }
+
+    public void showTable() {
+        createTableModel();
+        alimentTable(controllerCliente.getListClientesASC());
+    }
+
+    public void pesquisarTable(String nome) {
+        createTableModel();
+        //System.out.println(controllerCliente.getListClienteByNome(nome).toString());
+        alimentTable(controllerCliente.getListClienteByNome(nome));
+    }
+
+    private void editarCliente() {
+
+        ViewNovoCliente viewNovoCliente = new ViewNovoCliente(null, true);
+        Cliente cliente = controllerCliente.getClienteByName(Texto.getLinhaTable(jTableConsultaCliente, 0));
+        viewNovoCliente.editarCliente(cliente);
+        viewNovoCliente.setVisible(true);
+    }
+
 }
