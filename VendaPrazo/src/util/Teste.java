@@ -13,7 +13,7 @@ public class Teste {
 
     public static void main(String[] args) {
 
-        Alert.sucess("funfou", "ta beleza");
+        Alert.error("funfou", "ta beleza");
     }
 
 }

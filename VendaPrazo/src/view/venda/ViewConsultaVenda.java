@@ -5,13 +5,25 @@
  */
 package view.venda;
 
+import controller.ControllerCliente;
+import controller.ControllerVenda;
+import java.util.List;
+import model.Venda;
+import util.Alert;
 import util.Internal;
+import util.MyDefaultTableModel;
+import util.Texto;
 
 /**
  *
  * @author Paulo Soza
  */
-public class ViewConsultaVenda extends javax.swing.JInternalFrame {
+public class ViewConsultaVenda extends javax.swing.JInternalFrame
+{
+
+    private MyDefaultTableModel tableModel;
+    ControllerCliente controllerCliente = new ControllerCliente();
+    ControllerVenda controllerVenda = new ControllerVenda();
 
     /**
      * Creates new form ViewConsultaVenda
@@ -19,6 +31,40 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
     public ViewConsultaVenda() {
         initComponents();
         Internal.retiraBotao(this);
+        showTable();
+    }
+
+    public void createTableModel() {
+        tableModel = new MyDefaultTableModel(new String[]{"ID", "Cliente", "Valor", "Data"}, 0, false);
+        jTableConsultaVenda.setModel(tableModel);
+    }
+
+    public void alimentTable(List<Venda> vendas) {
+
+        for (int i = 0; i < vendas.size(); i++) {
+            String[] linhas = new String[]{
+                String.valueOf(vendas.get(i).getVendaPK().getIdVenda()),
+                vendas.get(i).getCliente().getNome(),
+                String.valueOf(vendas.get(i).getValor()),
+                String.valueOf(Texto.formataData(vendas.get(i).getData()))
+            };
+            tableModel.addRow(linhas);
+        }
+        jTableConsultaVenda.setModel(tableModel);
+    }
+
+    public void showTable() {
+        createTableModel();
+        ControllerVenda controllerVenda = new ControllerVenda();
+        alimentTable(controllerVenda.getVendaList());
+    }
+
+    public void showEditar() {
+        ViewNovaVenda viewNovaVenda = new ViewNovaVenda(null, true);
+
+        viewNovaVenda.editarComboBox(controllerCliente.getClienteByName(Texto.getLinhaTable(jTableConsultaVenda, 1)));
+        viewNovaVenda.editar(controllerVenda.getVendaById(Integer.parseInt(Texto.getLinhaTable(jTableConsultaVenda, 0))));
+        viewNovaVenda.setVisible(true);
     }
 
     /**
@@ -32,10 +78,10 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldBuscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableConsultaVenda = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -43,7 +89,18 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Buscar Venda:");
 
+        jTextFieldBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldBuscarActionPerformed(evt);
+            }
+        });
+
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Refresh3.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -53,7 +110,7 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap(49, Short.MAX_VALUE))
@@ -65,12 +122,12 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)))
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableConsultaVenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -81,13 +138,23 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jTableConsultaVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableConsultaVendaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableConsultaVenda);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excluir.png"))); // NOI18N
         jButton2.setText("Excluir");
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png"))); // NOI18N
         jButton3.setText("Editar Venda");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/novaVenda.png"))); // NOI18N
         jButton4.setText("Nova Venda");
@@ -133,8 +200,35 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
         viewNovaVenda.showNovaVenda();
         viewNovaVenda.alimentComboBoxCadastrar();
         viewNovaVenda.setVisible(true);
+        showTable();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (jTableConsultaVenda.getSelectedRow() == -1) {
+            Alert.warning("Você deve selecionar uma linha na Tabela", "Consultar Venda ");
+            return;
+        }
+        showEditar();
+        showTable();
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTableConsultaVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableConsultaVendaMouseClicked
+        if (evt.getClickCount() >= 2) {
+            showEditar();
+            showTable();
+        }
+
+    }//GEN-LAST:event_jTableConsultaVendaMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        showTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextFieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBuscarActionPerformed
+        String nomeCliente = jTextFieldBuscar.getText();
+
+    }//GEN-LAST:event_jTextFieldBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -144,7 +238,7 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable jTableConsultaVenda;
+    private javax.swing.JTextField jTextFieldBuscar;
     // End of variables declaration//GEN-END:variables
 }

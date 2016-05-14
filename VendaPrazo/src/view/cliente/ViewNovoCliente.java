@@ -7,16 +7,17 @@ package view.cliente;
 
 import controller.ControllerCliente;
 import java.util.Date;
-import javax.swing.JOptionPane;
 import model.Cliente;
+import util.Alert;
 
 /**
  *
  * @author Paulo Soza
  */
-public class ViewNovoCliente extends javax.swing.JDialog {
+public class ViewNovoCliente extends javax.swing.JDialog
+{
 
-    boolean isNovoCliente = false;
+    boolean novoCliente = false;
     Cliente cliente = new Cliente();
 
     /**
@@ -30,26 +31,23 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
     public boolean validarCampos() {
 
-        if (nome.getText().isEmpty()) {
+        if (nome.getText().isEmpty())
             return false;
-        }
-        if (rua.getText().isEmpty()) {
+        if (rua.getText().isEmpty())
             return false;
-        }
-        if (bairro.getText().isEmpty()) {
+        if (bairro.getText().isEmpty())
             return false;
-        }
         return true;
 
     }
 
     public void novoCliente(Cliente cliente) {
-        isNovoCliente = true;
+        novoCliente = true;
     }
 
     public void showNovoClienteTitle() {
         this.setTitle("Cadastrar Novo Cliente");
-        isNovoCliente = true;
+        novoCliente = true;
     }
 
     /**
@@ -202,9 +200,9 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
 
-        Cliente cliente = new Cliente();
-
         if (validarCampos()) {
+
+            boolean save = false;
 
             cliente.setNome(nome.getText());
             cliente.setBairro(bairro.getText());
@@ -216,27 +214,21 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
             ControllerCliente controllerCliente = new ControllerCliente();
 
-            if (isNovoCliente) {
-                controllerCliente.save(cliente);
-                this.dispose();
+            if (novoCliente) {
+                save = controllerCliente.save(cliente);
+
+                if (save)
+                    this.dispose();
+
             } else {
+                save = controllerCliente.editar(cliente);
 
-                cliente.setNome(nome.getText());
-                cliente.setBairro(bairro.getText());
-                cliente.setCasa(Integer.parseInt(numero.getText()));
-                cliente.setData(new Date());
-                cliente.setObservacao(observacao.getText());
-                cliente.setRua(rua.getText());
-                cliente.setTelefone(Integer.parseInt(telefone.getText()));
-                cliente.setIdCliente(this.cliente.getIdCliente());
-
-                controllerCliente.editar(cliente);
-                this.dispose();
+                if (save)
+                    this.dispose();
             }
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Campos 'nome', 'rua' e 'bairro' são obrigatórios");
-        }
+        } else
+            Alert.warning("Campos 'nome', 'rua' e 'bairro' são obrigatórios", "Novo Cliente");
     }//GEN-LAST:event_salvarActionPerformed
 
     /**
@@ -267,10 +259,12 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             public void run() {
                 ViewNovoCliente dialog = new ViewNovoCliente(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter()
+                {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -312,7 +306,7 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         observacao.setText(clienteUsuario.getObservacao());
         bairro.setText(clienteUsuario.getBairro());
 
-        isNovoCliente = false;
+        novoCliente = false;
     }
 
 }

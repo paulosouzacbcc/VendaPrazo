@@ -12,9 +12,10 @@ import javax.swing.JOptionPane;
  *
  * @author maverick
  */
-public class Alert {
+public class Alert
+{
 
-    ImageIcon icon = new ImageIcon("/home/maverick/NetBeansProjects/VendaPrazo/VendaPrazo/src/img/success.png");
+    ImageIcon icon = new ImageIcon("/img/sucesso02.png");
 
     public static void message(String mensagem, String titulo) {
 
@@ -34,7 +35,9 @@ public class Alert {
     }
 
     public static void sucess(String mensagem, String titulo) {
-        JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Alert.class.getResource("/img/success.png")));
+
+        JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE,
+                new ImageIcon(Alert.class.getResource("/img/sucesso4.png")));
     }
 
 }

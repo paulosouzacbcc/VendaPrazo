@@ -16,7 +16,8 @@ import util.Texto;
  *
  * @author maverick
  */
-public class ViewConsultaCliente extends javax.swing.JInternalFrame {
+public class ViewConsultaCliente extends javax.swing.JInternalFrame
+{
 
     /**
      * Creates new form view_consulta_cliente
@@ -173,13 +174,15 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
         }
 
         editarCliente();
+        showTable();
 
     }//GEN-LAST:event_editarClienteActionPerformed
 
     private void jTableConsultaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableConsultaClienteMouseClicked
 
         if (evt.getClickCount() >= 2) {
-            Alert.information("teste", "hgh");
+            editarCliente();
+            showTable();
         }
     }//GEN-LAST:event_jTableConsultaClienteMouseClicked
 
@@ -202,14 +205,19 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
     }
 
     public void createTableModel() {
-        tableModel = new MyDefaultTableModel(new String[]{"Nome", "Rua", "Bairro", "Telefone"}, 0, false);
+        tableModel = new MyDefaultTableModel(new String[]{"ID", "Nome", "Rua", "Bairro", "Telefone"}, 0, false);
         jTableConsultaCliente.setModel(tableModel);
     }
 
     public void alimentTable(List<Cliente> clientes) {
 
         for (int i = 0; i < clientes.size(); i++) {
-            String[] linhas = new String[]{clientes.get(i).getNome(), clientes.get(i).getRua(), clientes.get(i).getBairro(), String.valueOf(clientes.get(i).getTelefone())};
+            String[] linhas = new String[]{
+                String.valueOf(clientes.get(i).getIdCliente()),
+                clientes.get(i).getNome(),
+                clientes.get(i).getRua(),
+                clientes.get(i).getBairro(),
+                String.valueOf(clientes.get(i).getTelefone())};
             tableModel.addRow(linhas);
         }
         jTableConsultaCliente.setModel(tableModel);
@@ -222,14 +230,13 @@ public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
     public void pesquisarTable(String nome) {
         createTableModel();
-        //System.out.println(controllerCliente.getListClienteByNome(nome).toString());
         alimentTable(controllerCliente.getListClienteByNome(nome));
     }
 
     private void editarCliente() {
 
         ViewNovoCliente viewNovoCliente = new ViewNovoCliente(null, true);
-        Cliente cliente = controllerCliente.getClienteByName(Texto.getLinhaTable(jTableConsultaCliente, 0));
+        Cliente cliente = controllerCliente.getClienteById(Integer.parseInt(Texto.getLinhaTable(jTableConsultaCliente, 0)));
         viewNovoCliente.editarCliente(cliente);
         viewNovoCliente.setVisible(true);
     }

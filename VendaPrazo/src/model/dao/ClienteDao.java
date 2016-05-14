@@ -16,7 +16,8 @@ import util.Conexao;
  *
  * @author Paulo Soza
  */
-public class ClienteDao extends ClienteJpaController {
+public class ClienteDao extends ClienteJpaController
+{
 
     public ClienteDao() {
         super(Conexao.conectar());
@@ -63,29 +64,18 @@ public class ClienteDao extends ClienteJpaController {
 
     }
 
-    public boolean salvar(Cliente cliente) {
+    public Cliente selectClienteByID(int id) {
 
         try {
-            ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
-            clienteJpaController.create(cliente);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    //TODO verificar s
-    public boolean editar(Cliente cliente) {
-        try {
-            ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
-            clienteJpaController.edit(cliente);
-            return true;
+            EntityManager entityManager = super.getEntityManager();
+            Query query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.idCliente = :id");
+            query.setParameter("id", id);
+            return (Cliente) query.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
 }

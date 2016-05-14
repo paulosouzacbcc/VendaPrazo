@@ -6,43 +6,53 @@
 package controller;
 
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.persistence.RollbackException;
+import jpa.ClienteJpaController;
 import model.Cliente;
 import model.dao.ClienteDao;
 import util.Alert;
+import util.Conexao;
 
 /**
  *
  * @author Paulo Soza
  */
-public class ControllerCliente {
+public class ControllerCliente
+{
 
     boolean save = false;
 
     ClienteDao clienteDao = new ClienteDao();
 
-    public void save(Cliente cliente) {
+    public boolean save(Cliente cliente) {
 
-        //TODO colocar exception espesificas revisar isso aqui
         try {
-            save = clienteDao.salvar(cliente);
-            JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
-        } catch (NumberFormatException numberFormatException) {
-            JOptionPane.showMessageDialog(null, "Erro ao Salvar, não aceita letras com numeros");
+            ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
+            clienteJpaController.create(cliente);
+            Alert.sucess("Salvo com sucesso!", "Novo cliente");
+            return true;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Alert.error("Número não deve conter letras, verifique.", "Novo cliente");
+        } catch (RollbackException re) {
+            re.printStackTrace();
+            Alert.error("Nome de Cliente já existe", "Novo cliente");
         }
+        return false;
 
     }
 
-    public void editar(Cliente cliente) {
+    public boolean editar(Cliente cliente) {
 
         try {
-
-            save = clienteDao.editar(cliente);
-            Alert.sucess("Salvo com Sucesso!", "Editar cliente");
-
+            ClienteJpaController clienteJpaController = new ClienteJpaController(Conexao.conectar());
+            clienteJpaController.edit(cliente);
+            Alert.sucess("Editado com Sucesso!", "Editar cliente");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public List<Cliente> getListClientesASC() {
@@ -63,6 +73,18 @@ public class ControllerCliente {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public Cliente getClienteById(int id) {
+
+        try {
+            ClienteDao clienteDao = new ClienteDao();
+            return clienteDao.findCliente(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 

@@ -18,10 +18,12 @@ import model.Venda;
  *
  * @author Paulo Soza
  */
-public class ViewNovaVenda extends javax.swing.JDialog {
+public class ViewNovaVenda extends javax.swing.JDialog
+{
 
     private boolean novaVenda = false;
     private DefaultComboBoxModel comboBoxModel;
+    Venda venda = new Venda();
 
     /**
      * Creates new form ViewNovaVenda
@@ -47,9 +49,29 @@ public class ViewNovaVenda extends javax.swing.JDialog {
 
     }
 
+    public void editarComboBox(Cliente cliente) {
+
+        comboBoxModel = new DefaultComboBoxModel();
+        ControllerCliente controllerCliente = new ControllerCliente();
+        cliente = controllerCliente.getClienteByName(cliente.getNome());
+        comboBoxModel.addElement(cliente.getNome());
+        jComboBoxNomeCliente.setModel(comboBoxModel);
+        jComboBoxNomeCliente.setEnabled(false);
+
+    }
+
     public void showNovaVenda() {
         setTitle("Cadastrar Nova Venda a Prazo");
         novaVenda = true;
+    }
+
+    public void editar(Venda vendaUsuario) {
+
+        venda = vendaUsuario;
+        setTitle("Editar Venda a Prazo");
+        valor.setText(String.valueOf(vendaUsuario.getValor()));
+        observacao.setText(vendaUsuario.getObservacao());
+        novaVenda = false;
     }
 
     public boolean validarCampos() {
@@ -191,27 +213,30 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         if (validarCampos()) {
 
             boolean save = false;
-            Venda venda = new Venda();
+            ControllerVenda controllerVenda = new ControllerVenda();
+            ControllerCliente controllerCliente = new ControllerCliente();
+
             venda.setData(new Date());
             venda.setObservacao(observacao.getText());
             venda.setValor(Double.parseDouble(valor.getText()));
 
-            ControllerCliente controllerCliente = new ControllerCliente();
-            venda.setCliente(controllerCliente.getClienteByName(jComboBoxNomeCliente.getSelectedItem().toString()));
+            Cliente cliente = controllerCliente.getClienteByName(jComboBoxNomeCliente.getSelectedItem().toString());
 
-            ControllerVenda controllerVenda = new ControllerVenda();
+            venda.setCliente(cliente);
 
             if (novaVenda) {
                 save = controllerVenda.save(venda);
-                if (save) {
-                    JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+
+                if (save)
                     this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Erro ao salvar nova venda à prazo");
-                }
             } else {
-                //TODO criar Editar
+
+                save = controllerVenda.editar(venda);
+
+                if (save)
+                    this.dispose();
             }
+
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -243,10 +268,12 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             public void run() {
                 ViewNovaVenda dialog = new ViewNovaVenda(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter()
+                {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -269,4 +296,5 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     private javax.swing.JTextArea observacao;
     private javax.swing.JTextField valor;
     // End of variables declaration//GEN-END:variables
+
 }
