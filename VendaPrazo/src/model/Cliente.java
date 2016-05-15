@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Paulo Soza
+ * @author maverick
  */
 @Entity
 @Table(name = "cliente")
@@ -167,13 +167,11 @@ public class Cliente implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cliente)) {
+        if (!(object instanceof Cliente))
             return false;
-        }
         Cliente other = (Cliente) object;
-        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente))) {
+        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente)))
             return false;
-        }
         return true;
     }
 
@@ -181,5 +179,5 @@ public class Cliente implements Serializable {
     public String toString() {
         return "model.Cliente[ idCliente=" + idCliente + " ]";
     }
-    
+
 }

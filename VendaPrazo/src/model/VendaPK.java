@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Paulo Soza
+ * @author maverick
  */
 @Embeddable
 public class VendaPK implements Serializable {
@@ -59,16 +59,13 @@ public class VendaPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VendaPK)) {
+        if (!(object instanceof VendaPK))
             return false;
-        }
         VendaPK other = (VendaPK) object;
-        if (this.idVenda != other.idVenda) {
+        if (this.idVenda != other.idVenda)
             return false;
-        }
-        if (this.clienteidCliente != other.clienteidCliente) {
+        if (this.clienteidCliente != other.clienteidCliente)
             return false;
-        }
         return true;
     }
 
@@ -76,5 +73,5 @@ public class VendaPK implements Serializable {
     public String toString() {
         return "model.VendaPK[ idVenda=" + idVenda + ", clienteidCliente=" + clienteidCliente + " ]";
     }
-    
+
 }

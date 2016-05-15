@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Paulo Soza
+ * @author maverick
  */
 @Entity
 @Table(name = "venda")
@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Venda.findByClienteidCliente", query = "SELECT v FROM Venda v WHERE v.vendaPK.clienteidCliente = :clienteidCliente"),
     @NamedQuery(name = "Venda.findByValor", query = "SELECT v FROM Venda v WHERE v.valor = :valor"),
     @NamedQuery(name = "Venda.findByObservacao", query = "SELECT v FROM Venda v WHERE v.observacao = :observacao"),
-    @NamedQuery(name = "Venda.findByData", query = "SELECT v FROM Venda v WHERE v.data = :data")})
+    @NamedQuery(name = "Venda.findByData", query = "SELECT v FROM Venda v WHERE v.data = :data"),
+    @NamedQuery(name = "Venda.findByStatus", query = "SELECT v FROM Venda v WHERE v.status = :status")})
 public class Venda implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +49,9 @@ public class Venda implements Serializable {
     @Column(name = "Data")
     @Temporal(TemporalType.DATE)
     private Date data;
+    @Basic(optional = false)
+    @Column(name = "Status")
+    private int status;
     @JoinColumn(name = "Cliente_idCliente", referencedColumnName = "idCliente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Cliente cliente;
@@ -59,10 +63,11 @@ public class Venda implements Serializable {
         this.vendaPK = vendaPK;
     }
 
-    public Venda(VendaPK vendaPK, double valor, Date data) {
+    public Venda(VendaPK vendaPK, double valor, Date data, int status) {
         this.vendaPK = vendaPK;
         this.valor = valor;
         this.data = data;
+        this.status = status;
     }
 
     public Venda(int idVenda, int clienteidCliente) {
@@ -101,6 +106,14 @@ public class Venda implements Serializable {
         this.data = data;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -119,13 +132,11 @@ public class Venda implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Venda)) {
+        if (!(object instanceof Venda))
             return false;
-        }
         Venda other = (Venda) object;
-        if ((this.vendaPK == null && other.vendaPK != null) || (this.vendaPK != null && !this.vendaPK.equals(other.vendaPK))) {
+        if ((this.vendaPK == null && other.vendaPK != null) || (this.vendaPK != null && !this.vendaPK.equals(other.vendaPK)))
             return false;
-        }
         return true;
     }
 
@@ -133,5 +144,5 @@ public class Venda implements Serializable {
     public String toString() {
         return "model.Venda[ vendaPK=" + vendaPK + " ]";
     }
-    
+
 }

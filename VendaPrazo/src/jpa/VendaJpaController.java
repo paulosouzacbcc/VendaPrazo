@@ -21,7 +21,7 @@ import model.VendaPK;
 
 /**
  *
- * @author Paulo Soza
+ * @author maverick
  */
 public class VendaJpaController implements Serializable {
 
@@ -35,9 +35,8 @@ public class VendaJpaController implements Serializable {
     }
 
     public void create(Venda venda) throws PreexistingEntityException, Exception {
-        if (venda.getVendaPK() == null) {
+        if (venda.getVendaPK() == null)
             venda.setVendaPK(new VendaPK());
-        }
         venda.getVendaPK().setClienteidCliente(venda.getCliente().getIdCliente());
         EntityManager em = null;
         try {
@@ -55,14 +54,12 @@ public class VendaJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findVenda(venda.getVendaPK()) != null) {
+            if (findVenda(venda.getVendaPK()) != null)
                 throw new PreexistingEntityException("Venda " + venda + " already exists.", ex);
-            }
             throw ex;
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -93,15 +90,13 @@ public class VendaJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 VendaPK id = venda.getVendaPK();
-                if (findVenda(id) == null) {
+                if (findVenda(id) == null)
                     throw new NonexistentEntityException("The venda with id " + id + " no longer exists.");
-                }
             }
             throw ex;
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -125,9 +120,8 @@ public class VendaJpaController implements Serializable {
             em.remove(venda);
             em.getTransaction().commit();
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -176,5 +170,5 @@ public class VendaJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

@@ -21,7 +21,7 @@ import model.Cliente;
 
 /**
  *
- * @author Paulo Soza
+ * @author maverick
  */
 public class ClienteJpaController implements Serializable {
 
@@ -35,9 +35,8 @@ public class ClienteJpaController implements Serializable {
     }
 
     public void create(Cliente cliente) {
-        if (cliente.getVendaList() == null) {
+        if (cliente.getVendaList() == null)
             cliente.setVendaList(new ArrayList<Venda>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -60,9 +59,8 @@ public class ClienteJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -77,15 +75,13 @@ public class ClienteJpaController implements Serializable {
             List<String> illegalOrphanMessages = null;
             for (Venda vendaListOldVenda : vendaListOld) {
                 if (!vendaListNew.contains(vendaListOldVenda)) {
-                    if (illegalOrphanMessages == null) {
+                    if (illegalOrphanMessages == null)
                         illegalOrphanMessages = new ArrayList<String>();
-                    }
                     illegalOrphanMessages.add("You must retain Venda " + vendaListOldVenda + " since its cliente field is not nullable.");
                 }
             }
-            if (illegalOrphanMessages != null) {
+            if (illegalOrphanMessages != null)
                 throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             List<Venda> attachedVendaListNew = new ArrayList<Venda>();
             for (Venda vendaListNewVendaToAttach : vendaListNew) {
                 vendaListNewVendaToAttach = em.getReference(vendaListNewVendaToAttach.getClass(), vendaListNewVendaToAttach.getVendaPK());
@@ -110,15 +106,13 @@ public class ClienteJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = cliente.getIdCliente();
-                if (findCliente(id) == null) {
+                if (findCliente(id) == null)
                     throw new NonexistentEntityException("The cliente with id " + id + " no longer exists.");
-                }
             }
             throw ex;
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -137,20 +131,17 @@ public class ClienteJpaController implements Serializable {
             List<String> illegalOrphanMessages = null;
             List<Venda> vendaListOrphanCheck = cliente.getVendaList();
             for (Venda vendaListOrphanCheckVenda : vendaListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
+                if (illegalOrphanMessages == null)
                     illegalOrphanMessages = new ArrayList<String>();
-                }
                 illegalOrphanMessages.add("This Cliente (" + cliente + ") cannot be destroyed since the Venda " + vendaListOrphanCheckVenda + " in its vendaList field has a non-nullable cliente field.");
             }
-            if (illegalOrphanMessages != null) {
+            if (illegalOrphanMessages != null)
                 throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             em.remove(cliente);
             em.getTransaction().commit();
         } finally {
-            if (em != null) {
+            if (em != null)
                 em.close();
-            }
         }
     }
 
@@ -199,5 +190,5 @@ public class ClienteJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }
