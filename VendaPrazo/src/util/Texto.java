@@ -28,12 +28,20 @@ public class Texto {
         return sdf.format(data);
     }
 
+    public static String formataDataPraPDF(Date data) {
+
+        if (data == null)
+            return "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy / MMMM / dd");
+        return sdf.format(data);
+    }
+
     public static void somenteNumeros(java.awt.event.KeyEvent evt) {
 
         String caracteres = "0987654321. '@#$%*()_+-=`'{[}]?/:;.,<>|";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
+        if (!caracteres.contains(evt.getKeyChar() + ""))
             evt.consume();
-        }
     }
 
     public static String getLinhaTable(JTable jTable, int coluna) {

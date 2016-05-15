@@ -9,13 +9,13 @@ import controller.ControllerCliente;
 import java.util.Date;
 import model.Cliente;
 import util.Alert;
+import util.Texto;
 
 /**
  *
  * @author Paulo Soza
  */
-public class ViewNovoCliente extends javax.swing.JDialog
-{
+public class ViewNovoCliente extends javax.swing.JDialog {
 
     boolean novoCliente = false;
     Cliente cliente = new Cliente();
@@ -89,6 +89,18 @@ public class ViewNovoCliente extends javax.swing.JDialog
         jLabel4.setText("Bairro:");
 
         jLabel5.setText("Telefone:");
+
+        numero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                numeroKeyTyped(evt);
+            }
+        });
+
+        telefone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                telefoneKeyTyped(evt);
+            }
+        });
 
         jLabel6.setText("Observações:");
 
@@ -231,6 +243,14 @@ public class ViewNovoCliente extends javax.swing.JDialog
             Alert.warning("Campos 'nome', 'rua' e 'bairro' são obrigatórios", "Novo Cliente");
     }//GEN-LAST:event_salvarActionPerformed
 
+    private void numeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numeroKeyTyped
+        Texto.somenteNumeros(evt);
+    }//GEN-LAST:event_numeroKeyTyped
+
+    private void telefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefoneKeyTyped
+        Texto.somenteNumeros(evt);
+    }//GEN-LAST:event_telefoneKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -259,12 +279,10 @@ public class ViewNovoCliente extends javax.swing.JDialog
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ViewNovoCliente dialog = new ViewNovoCliente(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter()
-                {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);

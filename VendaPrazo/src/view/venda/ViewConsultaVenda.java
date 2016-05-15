@@ -18,8 +18,7 @@ import util.Texto;
  *
  * @author Paulo Soza
  */
-public class ViewConsultaVenda extends javax.swing.JInternalFrame
-{
+public class ViewConsultaVenda extends javax.swing.JInternalFrame {
 
     private MyDefaultTableModel tableModel;
     ControllerCliente controllerCliente = new ControllerCliente();
@@ -35,7 +34,7 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame
     }
 
     public void createTableModel() {
-        tableModel = new MyDefaultTableModel(new String[]{"ID", "Cliente", "Valor", "Data"}, 0, false);
+        tableModel = new MyDefaultTableModel(new String[]{"ID", "Cliente", "Valor", "Data", "Status"}, 0, false);
         jTableConsultaVenda.setModel(tableModel);
     }
 
@@ -46,7 +45,7 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame
                 String.valueOf(vendas.get(i).getVendaPK().getIdVenda()),
                 vendas.get(i).getCliente().getNome(),
                 String.valueOf(vendas.get(i).getValor()),
-                String.valueOf(Texto.formataData(vendas.get(i).getData()))
+                String.valueOf(Texto.formataDataPraTabela(vendas.get(i).getData()))
             };
             tableModel.addRow(linhas);
         }
@@ -57,6 +56,13 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame
         createTableModel();
         ControllerVenda controllerVenda = new ControllerVenda();
         alimentTable(controllerVenda.getVendaList());
+    }
+
+    public void showBuscarTable() {
+        createTableModel();
+        ControllerVenda controllerVenda = new ControllerVenda();
+        alimentTable(controllerVenda.getVendaListByCliente(jTextFieldBuscar.getText()));
+
     }
 
     public void showEditar() {
@@ -226,8 +232,7 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextFieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBuscarActionPerformed
-        String nomeCliente = jTextFieldBuscar.getText();
-
+        showBuscarTable();
     }//GEN-LAST:event_jTextFieldBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

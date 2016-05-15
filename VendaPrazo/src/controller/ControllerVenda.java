@@ -16,8 +16,7 @@ import util.Conexao;
  *
  * @author maverick
  */
-public class ControllerVenda
-{
+public class ControllerVenda {
 
     public boolean save(Venda venda) {
 
@@ -64,6 +63,18 @@ public class ControllerVenda
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public List<Venda> getVendaListByCliente(String nome) {
+
+        try {
+            VendaDao vendaDao = new VendaDao();
+            return vendaDao.selectVendaListByName(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 

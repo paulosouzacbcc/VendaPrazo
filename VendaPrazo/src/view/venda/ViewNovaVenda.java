@@ -13,13 +13,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Venda;
+import util.Texto;
 
 /**
  *
  * @author Paulo Soza
  */
-public class ViewNovaVenda extends javax.swing.JDialog
-{
+public class ViewNovaVenda extends javax.swing.JDialog {
 
     private boolean novaVenda = false;
     private DefaultComboBoxModel comboBoxModel;
@@ -117,6 +117,12 @@ public class ViewNovaVenda extends javax.swing.JDialog
         jComboBoxNomeCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Valor:");
+
+        valor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                valorKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("Observação:");
 
@@ -240,6 +246,10 @@ public class ViewNovaVenda extends javax.swing.JDialog
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void valorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_valorKeyTyped
+        Texto.somenteNumeros(evt);
+    }//GEN-LAST:event_valorKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -268,12 +278,10 @@ public class ViewNovaVenda extends javax.swing.JDialog
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ViewNovaVenda dialog = new ViewNovaVenda(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter()
-                {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);

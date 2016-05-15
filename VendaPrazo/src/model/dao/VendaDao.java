@@ -16,8 +16,7 @@ import util.Conexao;
  *
  * @author Paulo Soza
  */
-public class VendaDao extends VendaJpaController
-{
+public class VendaDao extends VendaJpaController {
 
     public VendaDao() {
         super(Conexao.conectar());
@@ -42,6 +41,18 @@ public class VendaDao extends VendaJpaController
         try {
             EntityManager entityManager = super.getEntityManager();
             Query query = entityManager.createQuery("SELECT v FROM Venda v ORDER BY v.data ASC");
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Venda> selectVendaListByName(String nome) {
+        try {
+            EntityManager entityManager = super.getEntityManager();
+            Query query = entityManager.createQuery("SELECT v FROM Venda v WHERE v.cliente.nome LIKE :nome");
+            query.setParameter("nome", nome + "%");
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
