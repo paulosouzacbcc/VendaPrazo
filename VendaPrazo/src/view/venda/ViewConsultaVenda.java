@@ -34,8 +34,15 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
     }
 
     public void createTableModel() {
-        tableModel = new MyDefaultTableModel(new String[]{"ID", "Cliente", "Valor", "Data", "Status"}, 0, false);
+        tableModel = new MyDefaultTableModel(new String[]{"ID", "Cliente", "Valor", "Status", "Data"}, 0, false);
         jTableConsultaVenda.setModel(tableModel);
+    }
+
+    public String status(int status) {
+        if (status == 1)
+            return "Pago";
+        else
+            return "Não Pago";
     }
 
     public void alimentTable(List<Venda> vendas) {
@@ -45,7 +52,9 @@ public class ViewConsultaVenda extends javax.swing.JInternalFrame {
                 String.valueOf(vendas.get(i).getVendaPK().getIdVenda()),
                 vendas.get(i).getCliente().getNome(),
                 String.valueOf(vendas.get(i).getValor()),
+                status(vendas.get(i).getStatus()),
                 String.valueOf(Texto.formataDataPraTabela(vendas.get(i).getData()))
+
             };
             tableModel.addRow(linhas);
         }

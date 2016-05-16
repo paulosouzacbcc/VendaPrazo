@@ -10,9 +10,9 @@ import controller.ControllerVenda;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Venda;
+import util.Alert;
 import util.Texto;
 
 /**
@@ -71,21 +71,52 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         setTitle("Editar Venda a Prazo");
         valor.setText(String.valueOf(vendaUsuario.getValor()));
         observacao.setText(vendaUsuario.getObservacao());
+        setselectedRadio(venda);
         novaVenda = false;
+    }
+
+    public void setselectedRadio(Venda venda) {
+
+        if (venda.getStatus() == 1)
+            jRadioButtonPago.setSelected(true);
+        else
+            jRadioButtonNaoPago.setSelected(true);
     }
 
     public boolean validarCampos() {
 
         if (jComboBoxNomeCliente.getSelectedItem() == "--Selecione um Cliente--") {
-            JOptionPane.showMessageDialog(null, "Você deve selecionar um cliente.");
+            Alert.warning("Você deve selecionar um cliente.", "Nova venda");
             return false;
         }
+
+        if (!jRadioButtonPago.isSelected() && !jRadioButtonNaoPago.isSelected()) {
+            Alert.warning("Você deve selecionar um 'status' de venda", "Nova Venda");
+            return false;
+        }
+
         if (valor.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "O campo 'valor' não pode ser nulo");
+            Alert.warning("O campo 'valor' não pode ser nulo", "Nova venda");
             return false;
         }
 
         return true;
+    }
+
+    public int retornaValorStatusSelecionado() {
+
+        if (jRadioButtonPago.isSelected())
+            return 1;
+        else
+            return 2;
+    }
+
+    public int validateStatus(String status) {
+
+        if (status.equals("Pago"))
+            return 1;
+        else
+            return 2;
     }
 
     /**
@@ -97,6 +128,7 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupStatus = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBoxNomeCliente = new javax.swing.JComboBox<>();
@@ -107,6 +139,9 @@ public class ViewNovaVenda extends javax.swing.JDialog {
         observacao = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jRadioButtonPago = new javax.swing.JRadioButton();
+        jRadioButtonNaoPago = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -144,6 +179,15 @@ public class ViewNovaVenda extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setText("Status:");
+
+        buttonGroupStatus.add(jRadioButtonPago);
+        jRadioButtonPago.setText("Pago");
+
+        buttonGroupStatus.add(jRadioButtonNaoPago);
+        jRadioButtonNaoPago.setText("Não pago");
+        jRadioButtonNaoPago.setActionCommand("NãoPago");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,24 +196,33 @@ public class ViewNovaVenda extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addGap(214, 214, 214)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(5, 5, 5))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(10, 10, 10)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonPago)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButtonNaoPago)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(valor)
-                            .addComponent(jComboBoxNomeCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jComboBoxNomeCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(3, 3, 3)))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,18 +231,23 @@ public class ViewNovaVenda extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboBoxNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jRadioButtonPago)
+                    .addComponent(jRadioButtonNaoPago))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGap(57, 57, 57)
                         .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -225,6 +283,8 @@ public class ViewNovaVenda extends javax.swing.JDialog {
             venda.setData(new Date());
             venda.setObservacao(observacao.getText());
             venda.setValor(Double.parseDouble(valor.getText()));
+
+            venda.setStatus(retornaValorStatusSelecionado());
 
             Cliente cliente = controllerCliente.getClienteByName(jComboBoxNomeCliente.getSelectedItem().toString());
 
@@ -293,13 +353,17 @@ public class ViewNovaVenda extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupStatus;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBoxNomeCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButtonNaoPago;
+    private javax.swing.JRadioButton jRadioButtonPago;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea observacao;
     private javax.swing.JTextField valor;

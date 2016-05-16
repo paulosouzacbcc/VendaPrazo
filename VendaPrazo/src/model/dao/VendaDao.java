@@ -18,6 +18,9 @@ import util.Conexao;
  */
 public class VendaDao extends VendaJpaController {
 
+    public static final int PAGO = 1;
+    public static final int DEVENDO = 2;
+
     public VendaDao() {
         super(Conexao.conectar());
     }
@@ -35,6 +38,20 @@ public class VendaDao extends VendaJpaController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Venda> selectVendaListByStatus(int status) {
+
+        try {
+            EntityManager entityManager = super.getEntityManager();
+            Query query = entityManager.createQuery("SELECT v FROM Venda v WHERE v.status =:status");
+            query.setParameter("status", status);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     public List<Venda> selectVendaListASC() {

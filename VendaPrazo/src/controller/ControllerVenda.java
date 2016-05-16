@@ -66,11 +66,33 @@ public class ControllerVenda {
         return null;
     }
 
+    public List<Venda> getVendaListByStatus(int status) {
+        try {
+            VendaDao vendaDao = new VendaDao();
+            return vendaDao.selectVendaListByStatus(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Venda> getVendaListByCliente(String nome) {
 
         try {
             VendaDao vendaDao = new VendaDao();
             return vendaDao.selectVendaListByName(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Venda> getVendaListPago(int status) {
+
+        try {
+            VendaDao vendaDao = new VendaDao();
+            return vendaDao.selectVendaListByStatus(status);
         } catch (Exception e) {
             e.printStackTrace();
         }
