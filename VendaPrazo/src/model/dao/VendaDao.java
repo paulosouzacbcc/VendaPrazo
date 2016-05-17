@@ -44,7 +44,7 @@ public class VendaDao extends VendaJpaController {
 
         try {
             EntityManager entityManager = super.getEntityManager();
-            Query query = entityManager.createQuery("SELECT v FROM Venda v WHERE v.status =:status");
+            Query query = entityManager.createQuery("SELECT v FROM Venda v WHERE v.status =:status ORDER BY v.data ASC");
             query.setParameter("status", status);
             return query.getResultList();
         } catch (Exception e) {

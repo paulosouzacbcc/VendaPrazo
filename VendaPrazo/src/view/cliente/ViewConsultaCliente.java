@@ -16,8 +16,7 @@ import util.Texto;
  *
  * @author maverick
  */
-public class ViewConsultaCliente extends javax.swing.JInternalFrame
-{
+public class ViewConsultaCliente extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form view_consulta_cliente

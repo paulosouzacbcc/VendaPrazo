@@ -19,6 +19,15 @@ public class Texto {
         return sdf.format(data);
     }
 
+    public static String formataDataImpressao(Date data) {
+
+        if (data == null)
+            return "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy");
+        return sdf.format(data);
+    }
+
     public static String formataDataPraTabela(Date data) {
 
         if (data == null)

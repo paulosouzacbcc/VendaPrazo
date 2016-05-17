@@ -5,8 +5,15 @@
  */
 package view;
 
+import com.itextpdf.text.DocumentException;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import util.Alert;
+import util.GeneratorPDF;
 import util.Internal;
 import view.cliente.ViewConsultaCliente;
 import view.venda.ViewConsultaVenda;
@@ -51,9 +58,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
         viewConsultaCliente.setVisible(false);
         viewConsultaVenda.setVisible(false);
 
-        if (jInternalFrame != null) {
+        if (jInternalFrame != null)
             jInternalFrame.setVisible(true);
-        }
     }
 
     /**
@@ -101,6 +107,11 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pdf-icon.png"))); // NOI18N
         jButton3.setText("Exportar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,6 +148,27 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         trocarTelas(viewConsultaVenda);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        String DEST;
+        JFileChooser chooserDiretorio = new JFileChooser();
+        chooserDiretorio.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooserDiretorio.setDialogTitle("Escolha a pasta onde desejar salvar.");
+        chooserDiretorio.showSaveDialog(getParent());
+        DEST = chooserDiretorio.getSelectedFile().getAbsolutePath();
+        DEST += "/Relatório Popular Gás.pdf";
+
+        try {
+            new GeneratorPDF().createPdf(DEST);
+            Alert.sucess("Arquivo exportado com sucesso!", "Relatório Vendas");
+        } catch (IOException ex) {
+            Logger.getLogger(ViewPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ViewPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

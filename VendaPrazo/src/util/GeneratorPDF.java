@@ -60,7 +60,8 @@ public class GeneratorPDF {
 
         //Adicionando um paragrafo
         chapter.add(new Paragraph("Este relatório abrange todas as vendas a prazo do depósito Popular gás. "
-                + "Abaixo segue a tabela ordenada da venda mais antiga para a mais recente ainda não pagos.\n", paragraphFont));
+                + "Abaixo segue a tabela ordenada da venda mais antiga para a mais recente ainda não pagos. "
+                + "Gerado em " + Texto.formataDataImpressao(new Date()) + ".", paragraphFont));
 
         PdfPTable tableNaoPagos = new PdfPTable(4);
         for (int aw = 0; aw < vendasNaoPago.size(); aw++) {
@@ -105,6 +106,7 @@ public class GeneratorPDF {
         document.add(tableNaoPagos);
         document.add(chapter3);
         document.add(tablePagos);
+        document.addCreationDate();
         document.close();
     }
 
