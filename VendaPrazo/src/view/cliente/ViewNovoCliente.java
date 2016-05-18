@@ -15,7 +15,8 @@ import util.Texto;
  *
  * @author Paulo Soza
  */
-public class ViewNovoCliente extends javax.swing.JDialog {
+public class ViewNovoCliente extends javax.swing.JDialog
+{
 
     boolean novoCliente = false;
     Cliente cliente = new Cliente();
@@ -218,10 +219,17 @@ public class ViewNovoCliente extends javax.swing.JDialog {
 
             cliente.setNome(nome.getText());
             cliente.setBairro(bairro.getText());
+
+            if (numero.getText().isEmpty())
+                numero.setText("0");
             cliente.setCasa(Integer.parseInt(numero.getText()));
+
             cliente.setData(new Date());
             cliente.setObservacao(observacao.getText());
             cliente.setRua(rua.getText());
+
+            if (telefone.getText().isEmpty())
+                telefone.setText("0");
             cliente.setTelefone(Integer.parseInt(telefone.getText()));
 
             ControllerCliente controllerCliente = new ControllerCliente();
@@ -279,10 +287,12 @@ public class ViewNovoCliente extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             public void run() {
                 ViewNovoCliente dialog = new ViewNovoCliente(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter()
+                {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
